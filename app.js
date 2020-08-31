@@ -3,19 +3,21 @@ var express = require('express'),
   passport = require('passport'),
   swig = require('swig'),
   SpotifyStrategy = require('passport-spotify').Strategy;
+//Enable These When Port 8888 Works
+//const peep = require('peep');
+//const pap = require('peep').papextension;
+//pap.on("peep", pep => {
+  //if (pap.content.port == "8888" {
+       //peep.do(urgo);
+//var urgo = require('urgo-peep');
+}
+}
 
 var consolidate = require('consolidate');
 
-var appKey = '2d2b888e391a48dfa5472ecc15b3dbba';
-var appSecret = '3aba45fb91cf4ce0a40bafd374ce65b6';
+var appKey = 'PEEP_API_KEY';
+var appSecret = 'PEEP_API_SECRET';
 
-// Passport session setup.
-//   To support persistent login sessions, Passport needs to be able to
-//   serialize users into and deserialize users out of the session. Typically,
-//   this will be as simple as storing the user ID when serializing, and finding
-//   the user by ID when deserializing. However, since this example does not
-//   have a database of user records, the complete spotify profile is serialized
-//   and deserialized.
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -24,10 +26,7 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
-// Use the SpotifyStrategy within Passport.
-//   Strategies in Passport require a `verify` function, which accept
-//   credentials (in this case, an accessToken, refreshToken, expires_in
-//   and spotify profile), and invoke a callback with a user object.
+
 passport.use(
   new SpotifyStrategy(
     {
@@ -36,12 +35,8 @@ passport.use(
       callbackURL: 'https://8888-7a6afa60-c3e4-474d-abe8-0dd70d3341fe.asia-southeast1.cloudshell.dev/callback'
     },
     function(accessToken, refreshToken, expires_in, profile, done) {
-      // asynchronous verification, for effect...
       process.nextTick(function() {
-        // To keep the example simple, the user's spotify profile is returned to
-        // represent the logged-in user. In a typical application, you would want
-        // to associate the spotify account with a user record in your database,
-        // and return that user instead.
+        
         return done(null, profile);
       });
     }
@@ -93,11 +88,7 @@ app.get(
   }
 );
 
-// GET /auth/spotify/callback
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request. If authentication fails, the user will be redirected back to the
-//   login page. Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
+
 app.get(
   '/callback',
   passport.authenticate('spotify', { failureRedirect: '/login' }),
